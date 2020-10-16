@@ -5,36 +5,29 @@ const url = process.env.MONGODB_URI
 console.log('connecting to', url)
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
-    .then(result => {
-        console.log('Connected to MongoDB')
-    })
-    .catch(e =>{
-        console.log('error connecting to DB, ', e.message)
-    })
 
-    const personSchema = new mongoose.Schema({
-        name: {
-            type: String,
-            unique: true,
-            required: true,
-            minlength: 3
-        },
-        phone: {
-            type: String,
-            unique: true,
-            required: true,
-            minlength: 8
-        }
-    })
-    
-    personSchema.set('toJSON', {
-        transform: (document, returnedObj) => {
-            returnedObj.id = returnedObj._id.toString()
-            delete returnedObj._id
-            delete returnedObj.__v
-        }
+const personSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 3
+  },
+  phone: {
+    type: String,
+    unique: true,
+    required: true,
+    minlength: 8
+  }
+})
 
-    })
-    
-    module.exports = mongoose.model('Person', personSchema)
-    
+personSchema.set('toJSON', {
+  transform: (document, returnedObj) => {
+    returnedObj.id = returnedObj._id.toString()
+    delete returnedObj._id
+    delete returnedObj.__v
+  }
+
+})
+
+module.exports = mongoose.model('Person', personSchema)
